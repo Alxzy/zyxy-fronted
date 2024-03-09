@@ -1,11 +1,9 @@
 <template>
-主页
+队伍
 </template>
 
-<script>
-export default {
-  name: "Index"
-}
+<script setup>
+
 </script>
 
 <style scoped>

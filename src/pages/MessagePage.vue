@@ -1,11 +1,9 @@
 <template>
-队伍
+消息
 </template>
 
-<script>
-export default {
-  name: "Team"
-}
+<script setup>
+
 </script>
 
 <style scoped>
