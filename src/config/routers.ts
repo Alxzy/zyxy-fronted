@@ -10,7 +10,7 @@ const routes = [
     { path: '/search', component: Search },
     { path: '/user', component: User },
     { path: '/message', component: Message },
-    { path: '/userEdit', component: UserEdit },
+    { path: '/user/edit', component: UserEdit },
 ]
 
 export default routes;
