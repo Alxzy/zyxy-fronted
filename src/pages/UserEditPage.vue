@@ -5,7 +5,7 @@
     <van-field
         v-model="editUser.currentValue"
         :name="editUser.editName"
-        :label="editUser.editKey"
+        :label="editUser.editName"
         :placeholder="`请输入${editUser.editName}`"
         :rules="[{ required: true, message: '请填写密码' }]"
     />
@@ -23,6 +23,9 @@ import {useRoute} from 'vue-router'
 
 const route = useRoute();
 import {ref} from 'vue';
+import myAxios from "../plugins/myAxios";
+import {showFailToast} from "vant";
+import {getCurrentUser} from "../services/user";
 
 // 接收参数并初始化
 const editUser = ref({
@@ -31,9 +34,22 @@ const editUser = ref({
   currentValue: route.query.currentValue,
 });
 
-const onSubmit = (values) => {
-  // todo 将 editKey、currentValue 提交给后端
-  console.log('onSubmit=', values);
+const onSubmit = async () => {
+  //获取用户信息
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser){
+    showFailToast('用户未登录')
+    return;
+  }
+  // 将 editKey、currentValue 提交给后端
+  const res = await myAxios.put(
+      '/user/update', {
+        'id': currentUser.id,
+        [editUser.value.editKey]: editUser.value.currentValue,
+      });
+  console.log(res,' 请求响应');
+
 };
 </script>
 

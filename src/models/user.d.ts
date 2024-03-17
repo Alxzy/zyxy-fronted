@@ -13,5 +13,6 @@ export type UserType = {
     userRole: number;
     createTime: Date;
     tags:string[];
+    profile:string
     planetCode:string;
 }

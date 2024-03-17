@@ -27,11 +27,17 @@
       :items="tagList"
   />
 
+  <!--  搜索用户-->
+  <div style="padding: 16px">
+    <van-button block type="primary" @click="doSearchUsersResult">搜索</van-button>
+  </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {ref} from 'vue';
+import {useRouter} from "vue-router";
 
+const router = useRouter();
 const searchText = ref('');
 const show = ref(true);
 const close = () => {
@@ -87,6 +93,18 @@ const onSearch = (val) => {
 const onCancel = () => {
   searchText.value = '';
   tagList.value = originTagList;
+};
+/**
+ * 跳转到搜索结果页面，根据标签搜索用户列表
+ * @param val
+ */
+const doSearchUsersResult = () => {
+  router.push({
+    path:'/user/list',
+    query:{
+      tags:activeIds.value
+    }
+  });
 };
 </script>
 
