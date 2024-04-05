@@ -69,8 +69,26 @@ const originTagList = [
       {text: '大二', id: '大二'},
       {text: '大三', id: '大三'},
       {text: '大四', id: '大四'},
-      {text: '研一', id: '研一'},
-      {text: '研二', id: '研二'},
+    ],
+  },
+  {
+    text: '编程学习方向',
+    children: [
+      {text: 'java', id: 'java'},
+      {text: 'c++', id: 'c++'},
+      {text: 'python', id: 'python'},
+      {text: 'go', id: 'go'},
+    ],
+  },
+  {
+    text: '游戏',
+    children: [
+      {text: '王者荣耀', id: '王者荣耀'},
+      {text: '原神', id: '原神'},
+      {text: '英雄联盟', id: '英雄联盟'},
+      {text: '和平精英', id: '和平精英'},
+      {text: 'QQ飞车', id: 'QQ飞车'},
+      {text: '第五人格', id: '第五人格'},
     ],
   },
 ];

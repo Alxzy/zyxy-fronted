@@ -19,20 +19,26 @@
     </van-cell-group>
     <div style="margin: 16px;">
       <van-button round block type="primary" native-type="submit">
-        提交
+        登录
+      </van-button>
+    </div>
+    <div style="margin: 16px;">
+      <van-button round block type="primary" to="/user/register" native-type="submit">
+        注册
       </van-button>
     </div>
   </van-form>
 </template>
 
 <script setup lang="ts">
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {ref} from "vue";
 import myAxios from "../plugins/myAxios";
 import {showFailToast, showSuccessToast,} from "vant";
 import 'vant/es/toast/style'
 
 const router = useRouter();
+const route = useRoute();
 
 const userAccout = ref('');
 const userPassword = ref('');
@@ -45,7 +51,10 @@ const onSubmit = async () => {
   console.log(res.data,'用户登录');
   if (res  && res.code == 0){
     showSuccessToast ('登录成功');
-    router.replace('/')
+    // 跳转到之前的页面
+    const redirectUrl = route.query?.redirect as string ?? '/';
+    window.location.href = redirectUrl;
+
   } else {
     showFailToast ('登录失败')
   }

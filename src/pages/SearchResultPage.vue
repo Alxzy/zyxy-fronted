@@ -1,25 +1,5 @@
 <template>
-  <van-card
-      class="user"
-      v-for="user in userList"
-      :tag="`标记`"
-      :title="user.username"
-      :thumb="user.avatarUrl"
-      :desc="user.profile"
-
-  >
-
-
-    <template #tags>
-      <van-tag plain v-for="tag in user.tags" style="margin-right: 8px; margin-top: 8px" type="primary">
-        {{ tag }}
-      </van-tag>
-    </template>
-    <template #footer>
-      <van-button size="mini">关注</van-button>
-      <van-button size="mini">联系我</van-button>
-    </template>
-  </van-card>
+  <user-card-list :user-list = "userList"/>
 
   <van-empty v-if="!userList || userList.length < 1" description="搜索结果为空" />
 </template>
@@ -28,8 +8,8 @@
 import {useRoute} from 'vue-router'
 import {onMounted, ref} from "vue";
 import myAxios from '../plugins/myAxios.ts'
-import {Toast} from "vant";
 import qs from 'qs';
+import UserCardList from "../components/UserCardList.vue";
 
 const route = useRoute();
 console.log(route.query)
