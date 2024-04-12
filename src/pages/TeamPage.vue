@@ -86,8 +86,9 @@ const onSearch = (val) => {
 </script>
 
 <style scoped>
-#teamPage {
-
+.add-button {
+  /*显示在最上层*/
+  z-index: 9999;
 }
 
 </style>

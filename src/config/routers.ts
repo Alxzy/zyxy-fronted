@@ -12,6 +12,8 @@ import UserTeamCreatePage from "../pages/UserTeamCreatePage.vue";
 import UserTeamJoinPage from "../pages/UserTeamJoinPage.vue";
 import TeamAddPage from "../pages/TeamAddPage.vue";
 import TeamUpdatePage from "../pages/TeamUpdatePage.vue";
+import MyInvitationPage from "../pages/MyInvitationPage.vue";
+import TeamInvitePage from "../pages/TeamInvitePage.vue";
 const routes = [
     { path: '/', component: Index },
     { path: '/team',title:'找队伍', component: Team },
@@ -22,7 +24,8 @@ const routes = [
     { path: '/user/team/create',title:'我创建的队伍', component: UserTeamCreatePage },
     { path: '/user/team/join',title:'我加入的队伍', component: UserTeamJoinPage },
     { path: '/user/update',title:'找队伍', component: UserUpdate },
-    { path: '/message',title:'消息', component: Message },
+    { path: '/message',title:'邀请信息', component: MyInvitationPage },
+    { path: '/team/invite',title:'邀请用户加入队伍', component: TeamInvitePage },
     { path: '/user/edit',title:'编辑信息', component: UserEdit },
     { path: '/user/list',title:'找伙伴', component: SearchResult },
     { path: '/user/login',title:'登录', component: UserLogin },

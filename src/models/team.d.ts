@@ -18,4 +18,6 @@ export type TeamType = {
     createUser?: UserType;
     hasJoinNum?: number;
     hasJoin: boolean;
+    createUsername: string;
+    createAvatarUrl?: string;
 };

@@ -1,9 +1,14 @@
 <template>
   <template v-if="user">
     <van-cell title="当前用户" :value="user?.username" />
-    <van-cell title="修改信息" is-link to="/user/update" />
-    <van-cell title="我创建的队伍" is-link to="/user/team/create" />
-    <van-cell title="我加入的队伍" is-link to="/user/team/join" />
+    <van-cell icon="user-o" title="修改信息" is-link to="/user/update" />
+    <van-cell icon="friends-o" title="我创建的队伍" is-link to="/user/team/create" />
+    <van-cell icon="friends-o" title="我加入的队伍" is-link to="/user/team/join" />
+    <van-cell icon="smile-comment-o" title="我收到的邀请" is-link to="/message"/>
+    <div style="padding: 16px">
+      <van-button type="danger" block style="margin-top: 30px" @click="toLogin">退出</van-button>
+    </div>
+
   </template>
 
 
@@ -14,7 +19,7 @@
 import {useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
 import myAxios from "../plugins/myAxios";
-import {showFailToast, showSuccessToast} from "vant";
+import {showConfirmDialog, showFailToast, showNotify, showSuccessToast} from "vant";
 import {getCurrentUser} from "../services/user";
 
 const router = useRouter();
@@ -41,6 +46,23 @@ const toEdit = (editKey: string, editName: string, currentValue: string) => {
       currentValue,
     }
   });
+}
+
+const toLogin = () => {
+  showConfirmDialog({
+    title: '退出',
+    message:
+        '确定要退出登录吗？',
+  }).then(async () => {
+    const res = await myAxios.post('/user/logout');
+    if (res.code === 0){
+      showSuccessToast({message: '退出成功', type: 'success', duration: 500, });
+      router.replace('/user/login');
+    }else {
+      showNotify({message: res.description, type: 'danger', duration: 500, });
+    }
+  }).catch((err) => {});
+
 }
 </script>
 

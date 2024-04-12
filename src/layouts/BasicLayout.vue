@@ -16,12 +16,13 @@
   </div>
 
 
-  <van-tabbar route @change="onChange">
+  <van-tabbar route v-if="route.path==='/'||route.path==='/team'||route.path==='/user'||route.path==='/message'">
     <van-tabbar-item to="/" icon="home-o" name="index">主页</van-tabbar-item>
-    <van-tabbar-item to="/user" icon="search" name="user" dot>个人</van-tabbar-item>
-    <van-tabbar-item to="/team" icon="friends-o" name="team" badge="5">队伍</van-tabbar-item>
-    <van-tabbar-item to="/message" icon="setting-o" name="message" badge="20">消息</van-tabbar-item>
+    <van-tabbar-item to="/user" icon="search" name="user">个人</van-tabbar-item>
+    <van-tabbar-item to="/team" icon="friends-o" name="team">队伍</van-tabbar-item>
+    <van-tabbar-item to="/message" icon="setting-o" name="message">消息</van-tabbar-item>
   </van-tabbar>
+
 </template>
 
 <script setup lang="ts">
@@ -32,7 +33,7 @@ import {useRoute, useRouter} from "vue-router";
 import routes from "../config/routers.ts";
 const DEFAULT_TITLE = '只因寻友';
 const title = ref(DEFAULT_TITLE);
-
+const route = useRoute();
 const router = useRouter();
 
 /**

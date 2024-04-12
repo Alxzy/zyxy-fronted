@@ -1,8 +1,11 @@
 //自定义实例默认值
 import axios from "axios";
+import {preprocessCSS} from "vite";
 
+const isDev = process.env.NODE_ENV === 'development';
+console.log(process.env.NODE_ENV);
 const myAxios = axios.create({
-    baseURL:'http://localhost:9090/api',
+    baseURL:isDev? 'http://localhost:9090/api':'https://zyxy-back.ai-haitham-gsim.icu/api',
     withCredentials: true, //表示跨域请求时是否需要使用凭证
 });
 // 可以带上 cookie

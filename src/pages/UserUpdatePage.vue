@@ -9,7 +9,7 @@
     <van-cell title="电话" is-link to="/user/edit" :value="user.phone" @click="toEdit('phone','电话',user.phone)"/>
     <van-cell title="邮箱" is-link to="/user/edit" :value="user.email" @click="toEdit('email','邮箱',user.email)"/>
     <van-cell title="自我介绍" is-link to="/user/edit" :value="user.profile" @click="toEdit('profile','自我介绍',user.profile)"/>
-    <van-cell title="星球编号" :value="user.planetCode"/>
+    <van-cell title="用户分组" :value="user.planetCode"/>
     <van-cell title="注册时间" :value="user.createTime"/>
   </template>
 

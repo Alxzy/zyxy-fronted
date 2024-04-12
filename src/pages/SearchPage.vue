@@ -34,8 +34,10 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue';
+import {onMounted, reactive, ref} from 'vue';
 import {useRouter} from "vue-router";
+import myAxios from "../plugins/myAxios";
+import {getCurrentUser} from "../services/user";
 
 const router = useRouter();
 const searchText = ref('');
@@ -54,7 +56,7 @@ const doClose = (tag) => {
   });
 };
 // 标签列表
-const originTagList = [
+let originTagList = reactive([
   {
     text: '性别',
     children: [
@@ -80,20 +82,21 @@ const originTagList = [
       {text: 'go', id: 'go'},
     ],
   },
-  {
-    text: '游戏',
-    children: [
-      {text: '王者荣耀', id: '王者荣耀'},
-      {text: '原神', id: '原神'},
-      {text: '英雄联盟', id: '英雄联盟'},
-      {text: '和平精英', id: '和平精英'},
-      {text: 'QQ飞车', id: 'QQ飞车'},
-      {text: '第五人格', id: '第五人格'},
-    ],
-  },
-];
+  // {
+  //   text: '游戏',
+  //   children: [
+  //     {text: '王者荣耀', id: '王者荣耀'},
+  //     {text: '原神', id: '原神'},
+  //     {text: '英雄联盟', id: '英雄联盟'},
+  //     {text: '和平精英', id: '和平精英'},
+  //     {text: 'QQ飞车', id: 'QQ飞车'},
+  //     {text: '第五人格', id: '第五人格'},
+  //   ],
+  // },
+]);
 //标签列表
 let tagList = ref(originTagList);
+let planetCode = ref('');
 /**
  *  搜索过滤
  * @param val
@@ -123,6 +126,43 @@ const doSearchUsersResult = () => {
       tags:activeIds.value
     }
   });
+};
+
+onMounted(async () => {
+  const currentUser = await getCurrentUser();
+  planetCode.value = currentUser.planetCode;
+  getTagsByCategory()
+})
+/**
+ * 根据分组获取标签
+ * @param val
+ */
+const getTagsByCategory = () => {
+  // 上面的请求也可以这样做
+
+  myAxios.get('/tag/category/list', {
+    params: {
+      category: planetCode.value
+    },
+
+  })
+      .then(function (response) {
+        console.log('/tag/category/list success', response);
+
+        originTagList[2].children = response.data.map(item => ({
+          text: item.tagName,
+          id: item.tagName
+        })); // 将请求到的数据的列表元素数组赋值给 originTagList 的第一个元素的 children 数组
+        tagList.value = originTagList;
+
+
+        console.log('源数据',originTagList);
+      })
+      .catch(function (error) {
+        console.log('/tag/category/list', error);
+      });
+
+
 };
 </script>
 

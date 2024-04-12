@@ -123,7 +123,7 @@
 
 <script setup lang="ts">
 import {useRoute, useRouter} from "vue-router";
-import {onBeforeUnmount, onMounted, ref} from "vue";
+import {onBeforeUnmount, onMounted, reactive, ref} from "vue";
 import myAxios from "../plugins/myAxios.ts";
 import {showFailToast, showSuccessToast} from "vant";
 
@@ -144,7 +144,24 @@ let showTagList = ref(false);
 const url = ref('');
 const gender = ref('0');
 const searchText = ref('');
-let originTagList = [
+// 这里使用 reactive 使得每次请求得到的数据能够及时更新到视图中!! 踩坑 记录 todo
+let originTagList = reactive([
+  {
+    text: '性别',
+    children: [
+      {text: '男', id: '男'},
+      {text: '女', id: '女'},
+    ],
+  },
+  {
+    text: '年级',
+    children: [
+      {text: '大一', id: '大一'},
+      {text: '大二', id: '大二'},
+      {text: '大三', id: '大三'},
+      {text: '大四', id: '大四'},
+    ],
+  },
   {
     text: '星球',
     children: [
@@ -153,8 +170,7 @@ let originTagList = [
 
     ],
   },
-]
-
+]);
 
 let tagList = ref(originTagList);
 const categoryList = ref([]);
@@ -194,7 +210,7 @@ const onCancel = () => {
 };
 
 //已选中的标签
-const activeIds = ref([]);
+let activeIds = ref([]);
 const activeIndex = ref(0);
 
 
@@ -226,12 +242,17 @@ const getTagsByCategory = () => {
   })
       .then(function (response) {
         console.log('/tag/category/list success', response);
-        originTagList[0].children = response.data.map(item => ({
+        // todo 每个星球多个分组
+        originTagList[2].children = response.data.map(item => ({
           text: item.tagName,
           id: item.tagName
         })); // 将请求到的数据的列表元素数组赋值给 originTagList 的第一个元素的 children 数组
+        tagList.value = originTagList;
+        activeIds = ref([planetCode.value]);
+        originTagList[2].text = planetCode.value;
         showTagList.value = true;
-        console.log(originTagList)
+        console.log('源数据',originTagList);
+        console.log(planetCode.value)
       })
       .catch(function (error) {
         console.log('/tag/category/list', error);
@@ -246,7 +267,7 @@ const getTagsByCategory = () => {
 const onSubmit = async () => {
 
   const tags = JSON.stringify(activeIds.value)
-
+  console.log(tags)
   console.log('url', url);
   const res = await myAxios.post('/user/register', {
     username: username.value,

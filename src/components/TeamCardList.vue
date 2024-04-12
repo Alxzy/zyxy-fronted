@@ -4,7 +4,8 @@
   >
     <van-card
         v-for="team in props.teamList"
-        :thumb="ikun"
+        :thumb="team.createAvatarUrl===null?defaultAvatar:team.createAvatarUrl"
+        :tag="currentUserId === team.createId?'房主':''"
         :desc="team.description"
         :title="`${team.name}`"
     >
@@ -17,6 +18,9 @@
       </template>
       <template #bottom>
         <div>
+          {{ '队伍房主: ' + team.createUsername }}
+        </div>
+        <div>
           {{ `队伍人数: ${team.hasJoinNum}/${team.peopleNum}` }}
         </div>
         <div v-if="team.expireTime">
@@ -27,7 +31,7 @@
         </div>
       </template>
       <template #footer>
-        <van-button size="small" type="primary" v-if="team.createId !== currentUser?.id && !team.hasJoin" plain
+        <van-button size="small" type="primary" v-if="team.createId !== currentUserId && !team.hasJoin" plain
                     @click="preJoinTeam(team)">
           加入队伍
         </van-button>
@@ -40,7 +44,7 @@
         <van-button v-if="team.hasJoin" size="small" plain
                     @click="doQuitTeam(team.id)">退出队伍
         </van-button>
-        <van-button v-if="team.createId === currentUser?.id" size="small" type="danger" plain
+        <van-button v-if="team.createId === currentUserId" size="small" type="danger" plain
                     @click="doDeleteTeam(team.id)">解散队伍
         </van-button>
       </template>
@@ -56,12 +60,12 @@
 <script setup lang="ts">
 import {TeamType} from "../models/team";
 import {teamStatusEnum} from "../constants/team";
-import ikun from '../assets/ikun.webp';
 import myAxios from "../plugins/myAxios";
-import {Dialog, showFailToast, showSuccessToast, Toast} from "vant";
+import {Dialog, showFailToast, showSuccessToast} from "vant";
 import {onMounted, ref} from "vue";
 import {getCurrentUser} from "../services/user";
 import {useRouter} from "vue-router";
+import defaultAvatar from "../assets/ikun.webp"
 
 interface TeamCardListProps {
   teamList: TeamType[];
@@ -76,11 +80,13 @@ const showPasswordDialog = ref(false);
 const password = ref('');
 const joinTeamId = ref(0);
 const currentUser = ref();
-
+const currentUserId = ref(0);
 const router = useRouter();
 
 onMounted(async () => {
-  currentUser.value = await getCurrentUser();
+  const currentUser = await getCurrentUser();
+  currentUserId.value = currentUser.id;
+  // console.log('userId',currentUserId.value);
 })
 
 const preJoinTeam = (team: TeamType) => {
